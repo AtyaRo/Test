@@ -1,4 +1,5 @@
-﻿using Ideals_Test_Project.Helpers;
+﻿using Ideals_Test_Project.Builders;
+using Ideals_Test_Project.Helpers;
 using Ideals_Test_Project.Pages;
 using OpenQA.Selenium;
 using System.Reflection;
@@ -17,6 +18,8 @@ namespace Ideals_Test_Project.Tests
     {
         private SearchPage _searchPage;
         private HomePage _homePage;
+        private ShoppingCartSummary _shoppingCartSummary;
+        private RegisterPage _registerPage;
 
         public CheckoutTests(string driverSouce) : base(driverSouce)
         {
@@ -27,6 +30,8 @@ namespace Ideals_Test_Project.Tests
         {
             _searchPage = new SearchPage(driver);
             _homePage = new HomePage(driver);
+            _shoppingCartSummary = new ShoppingCartSummary(driver);
+            _registerPage = new RegisterPage(driver);
         }
 
         [TearDown]
@@ -51,9 +56,16 @@ namespace Ideals_Test_Project.Tests
         public void Scenario1()
         {
             PerformSearch(_searchPage);
-            AddItemToTheCart(_searchPage);
-            Login();
-            CheckItemsInCart();
+            var item = AddItemToTheCart(_searchPage);
+            ProceedToCheckout(_searchPage, _shoppingCartSummary, item);
+            CreateAccount();
+
+            ConfirmAddress();
+            ConfirmShipping();
+
+            CheckItemsOnPaymentPage(item);
+            PerformPayment();
+
         }
 
         [Test]
@@ -112,20 +124,52 @@ namespace Ideals_Test_Project.Tests
             searchPage.PerformSearch(searchText);
         }
 
-        private void AddItemToTheCart(SearchPage searchPage)
+        private string AddItemToTheCart(SearchPage searchPage)
         {
-            searchPage.AddFirstFoundItemToCart();
+            return searchPage.AddFirstFoundItemToCart();
         }
 
-        private void Login()
+        private void ProceedToCheckout(SearchPage searchPage, ShoppingCartSummary shoppingCartSummary, string item)
         {
+            searchPage.ProceedToCheckout();
+            shoppingCartSummary.WaitForSummaryElementsLoaded();
+            Assert.AreEqual(shoppingCartSummary._orderedItem.Text, item,
+                "Item added to the cart and the one shown on Cart summary page are not the same");
 
+            shoppingCartSummary.ProceedToCheckout();
         }
 
-        private void CheckItemsInCart()
+        private void CreateAccount()
         {
-
+            var customerInfo = new CustomerInfoBuilder().CustomerFixture;
+            _registerPage.EnterEmail(customerInfo.EmailAddress);
+            _registerPage.OpenCreateAccountForm();
+            _registerPage.FillInRegistrationForm(customerInfo);
         }
+
+        private void ConfirmAddress()
+        {
+            _shoppingCartSummary.ConfirmShippingAddress();
+        }
+
+        private void ConfirmShipping()
+        {
+            _shoppingCartSummary.ConfirmProcessCarrier();
+        }
+
+        private void CheckItemsOnPaymentPage(string item)
+        {
+            _shoppingCartSummary.WaitForItemsLoadedOnPaymentScreen();
+            Assert.AreEqual(_shoppingCartSummary._itemNameOnPaymentScreen.Text, item,
+                "Item added to the cart and the one shown on Cart summary page are not the same");
+        }
+
+        private void PerformPayment()
+        {
+            _shoppingCartSummary.PayByChecque();
+            _shoppingCartSummary.ConfirmOrder();
+        }
+
 
     }
 }
