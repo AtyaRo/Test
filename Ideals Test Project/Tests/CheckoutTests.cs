@@ -53,7 +53,7 @@ namespace Ideals_Test_Project.Tests
         }
 
         [Test]
-        public void Scenario1()
+        public void CheckBuyingItemsThroughSearchByNotRegisteredCustomer()
         {
             PerformSearch(_searchPage);
             var item = AddItemToTheCart(_searchPage);
@@ -66,6 +66,24 @@ namespace Ideals_Test_Project.Tests
             CheckItemsOnPaymentPage(item);
             PerformPayment();
 
+            CheckOrderConfirmationPage();
+        }
+
+        [Test]
+        public void CheckBuyingItemsThroughUrlByNotRegisteredCustomer()
+        {
+            OpenHomePage();
+            var item = AddItemToTheCartFromHomePage();
+            NavigateToCartThroughUrl();
+            CheckItemsInTheCart(item);
+            ProceedToCheckout();
+            ConfirmAddress();
+            ConfirmShipping();
+
+            CheckItemsOnPaymentPage(item);
+            PerformPayment();
+
+            CheckOrderConfirmationPage();
         }
 
         [Test]
@@ -118,7 +136,7 @@ namespace Ideals_Test_Project.Tests
 
         private void PerformSearch(SearchPage searchPage)
         {
-            var searchText = searchPage.SelectRandomItemFromHomePage();
+            var searchText = _homePage.SelectRandomItemName();
             ReporterHelper.Log(AventStack.ExtentReports.Status.Info, $"Random item is selected: {searchText}");
 
             searchPage.PerformSearch(searchText);
@@ -170,6 +188,32 @@ namespace Ideals_Test_Project.Tests
             _shoppingCartSummary.ConfirmOrder();
         }
 
+        private void CheckOrderConfirmationPage()
+        {
+            _shoppingCartSummary.WaitForOrderConfirmationMessage();
+            Assert.AreEqual(_shoppingCartSummary._orderConfirmationAlert.Text, "Your order on My Store is complete.",
+                "Alert message text is not as expected");
+        }
 
+        private string  AddItemToTheCartFromHomePage()
+        {
+            return _homePage.AddRandomItemToTheCart();
+        }
+
+        private void NavigateToCartThroughUrl()
+        {
+            _shoppingCartSummary.NavigateToCartByUrl();
+        }
+
+        private void CheckItemsInTheCart(string item)
+        {
+            Assert.AreEqual(_shoppingCartSummary._orderedItem.Text, item,
+                "Item added to the cart and the one shown on Cart summary page are not the same");
+        }
+
+        private void ProceedToCheckout()
+        {
+            _shoppingCartSummary.ProceedToCheckout();
+        }
     }
 }

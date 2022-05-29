@@ -20,8 +20,10 @@ namespace Ideals_Test_Project.Pages
         public IWebElement _itemNameOnPaymentScreen => driver.FindElement(By.CssSelector("p.product-name a"));
         public IWebElement _payByChequeBtn => driver.FindElement(By.CssSelector("a.cheque"));
         public IWebElement _orderConfirmationBtn => driver.FindElement(By.CssSelector("p.cart_navigation button[type='submit']"));
+        public IWebElement _orderConfirmationAlert => driver.FindElement(By.CssSelector("p.alert-success"));
+        public IWebElement _cartPageBreadcrumb => driver.FindElement(By.CssSelector("span.navigation_page"));
 
-       
+
         public void WaitForSummaryElementsLoaded()
         {
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
@@ -72,6 +74,21 @@ namespace Ideals_Test_Project.Pages
             wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("p.cart_navigation button[type='submit']")));
 
             _orderConfirmationBtn.Click();
+        }
+
+        public void WaitForOrderConfirmationMessage()
+        {
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("p.alert-success")));
+        }
+
+        public void NavigateToCartByUrl()
+        {
+            driver.Navigate().GoToUrl(Constants.CartPage);
+
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            wait.Until(ExpectedConditions.TextToBePresentInElement(_cartPageBreadcrumb,
+                "Your shopping cart"));
         }
 
     }
