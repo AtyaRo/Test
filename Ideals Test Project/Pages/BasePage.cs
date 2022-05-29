@@ -1,23 +1,26 @@
 ﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Firefox;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using OpenQA.Selenium.Support.UI;
+using SeleniumExtras.WaitHelpers;
+
 
 namespace Ideals_Test_Project.Pages
 {
     public class BasePage
     {
         protected IWebDriver? driver;
-        private const string _homePage = "http://automationpractice.com/index.php";
 
         public BasePage(IWebDriver driver)
         {
             this.driver = driver;
         }
-      
+
+        public void OpenHomePage()
+        {
+            driver.Navigate().GoToUrl(Constants.HomePage);
+
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("a.login")));
+        }
+
     }
 }

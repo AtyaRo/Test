@@ -15,7 +15,8 @@ namespace Ideals_Test_Project.Tests
     [TestFixtureSource(typeof(DriverSource), nameof(DriverSource.Drivers))]
     public class CheckoutTests : BaseTest
     {
-        private SearchPage searchPage;
+        private SearchPage _searchPage;
+        private HomePage _homePage;
 
         public CheckoutTests(string driverSouce) : base(driverSouce)
         {
@@ -24,7 +25,8 @@ namespace Ideals_Test_Project.Tests
         [SetUp]
         public void Setup()
         {
-            searchPage = new SearchPage(driver);
+            _searchPage = new SearchPage(driver);
+            _homePage = new HomePage(driver);
         }
 
         [TearDown]
@@ -48,10 +50,58 @@ namespace Ideals_Test_Project.Tests
         [Test]
         public void Scenario1()
         {
-            PerformSearch(searchPage);
-            AddItemToTheCart(searchPage);
+            PerformSearch(_searchPage);
+            AddItemToTheCart(_searchPage);
             Login();
             CheckItemsInCart();
+        }
+
+        [Test]
+        public void CheckHomePageMainElements()
+        {
+            OpenHomePage();
+            CheckHeaderElements();
+            CheckMainBlockElements();
+            CheckFooterElements();
+        }
+
+        private void OpenHomePage()
+        {
+            _homePage.OpenHomePage();
+        }
+
+        private void CheckHeaderElements()
+        {
+            Assert.Multiple(() =>
+            {
+                Assert.IsNotNull(_homePage.ContactUs, "Contact us element is not present on the page");
+                Assert.IsNotNull(_homePage.HeaderBanner, "HeaderBannerelement is not present on the page");
+                Assert.IsNotNull(_homePage.SignIn, "SignIn element is not present on the page");
+                Assert.IsNotNull(_homePage.CategoriesBlock, "CategoriesBlock us element is not present on the page");
+                Assert.IsNotNull(_homePage.SearchField, "Search element is not present on the page");
+                Assert.IsNotNull(_homePage.AddToCartBtn, "Add to cart element is not present on the page");
+            });
+        }
+
+        private void CheckMainBlockElements()
+        {
+            Assert.Multiple(() =>
+            {
+                Assert.IsNotNull(_homePage.SaleBlock, "SAle block element is not present on the page");
+                Assert.IsNotNull(_homePage.Popular, "Popular element is not present on the page");
+                Assert.IsNotNull(_homePage.BestSellers, "BestSellers element is not present on the page");
+                Assert.IsNotEmpty(_homePage.FeaturedHomePageItems, "Featured items are not present on the page");
+            });
+        }
+
+        private void CheckFooterElements()
+        {
+            Assert.Multiple(() =>
+            {
+                Assert.IsNotNull(_homePage.SocialBlock, "Social block element is not present on the page");
+                Assert.IsNotNull(_homePage.Newsletter, "Newsletter element is not present on the page");
+                Assert.IsNotNull(_homePage.StoreInfo, "StoreInfo element is not present on the page");
+            });
         }
 
         private void PerformSearch(SearchPage searchPage)

@@ -8,7 +8,7 @@ namespace Ideals_Test_Project.Pages
 {
     public class SearchPage: BasePage
     {
-        private const string _homePage = "http://automationpractice.com/index.php";
+        //private const string _homePage = "http://automationpractice.com/index.php";
 
         public SearchPage(IWebDriver driver) : base(driver)
         {
@@ -23,7 +23,7 @@ namespace Ideals_Test_Project.Pages
 
         public string SelectRandomItemFromHomePage()
         {
-            driver.Navigate().GoToUrl(_homePage);           
+            OpenHomePage();
 
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
             wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("ul#homefeatured h5 a.product-name")));
