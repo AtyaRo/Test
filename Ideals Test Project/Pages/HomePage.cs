@@ -64,6 +64,8 @@ namespace Ideals_Test_Project.Pages
 
             actions.MoveToElement(_featuredItems[0]);
             actions.MoveToElement(_addToCartBtn);
+            //wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".button-container a.button.ajax_add_to_cart_button")));
+
 
             actions.Click().Build().Perform();
 
