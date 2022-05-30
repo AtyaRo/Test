@@ -39,16 +39,16 @@ namespace Ideals_Test_Project.Tests
         {
             if (TestContext.CurrentContext.Result.Outcome.Status == NUnit.Framework.Interfaces.TestStatus.Failed)
             {
+                ReporterHelper.Log(AventStack.ExtentReports.Status.Error,
+                    TestContext.CurrentContext.Result.Message);
+
                 Screenshot screenshot = ((ITakesScreenshot)driver).GetScreenshot();
                 string title = TestContext.CurrentContext.Test.Name;
                 string runname = $"{title} {DateTime.Now.ToString("yyyy - MM - dd - HH_mm_ss")}";
                 string screenshotfilename = $"{Assembly.GetEntryAssembly().Location}{runname}.jpg";
                 screenshot.SaveAsFile(screenshotfilename, ScreenshotImageFormat.Jpeg);
 
-
-                ReporterHelper.SaveScreenshot(screenshotfilename);
-                ReporterHelper.Log(AventStack.ExtentReports.Status.Error,
-                    TestContext.CurrentContext.Result.Message);
+                ReporterHelper.SaveScreenshot(screenshotfilename);               
             }
 
             driver.Quit();            
@@ -58,8 +58,8 @@ namespace Ideals_Test_Project.Tests
         public void CheckBuyingItemsThroughSearchByNotRegisteredCustomer()
         {
             PerformSearch(_searchPage);
-            var item = AddItemToTheCart(_searchPage);
-            ProceedToCheckout(_searchPage, _shoppingCartSummary, item);
+            var item = AddItemToTheCartFromSearch();
+            ProceedToCheckout(item);
             CreateAccount();
 
             ConfirmAddress();
@@ -146,19 +146,19 @@ namespace Ideals_Test_Project.Tests
             searchPage.PerformSearch(searchText);
         }
 
-        private string AddItemToTheCart(SearchPage searchPage)
+        private string AddItemToTheCartFromSearch()
         {
-            return searchPage.AddFirstFoundItemToCart();
+            return _searchPage.AddFirstFoundItemToCart();
         }
 
-        private void ProceedToCheckout(SearchPage searchPage, ShoppingCartSummary shoppingCartSummary, string item)
+        private void ProceedToCheckout(string item)
         {
-            searchPage.ProceedToCheckout();
-            shoppingCartSummary.WaitForSummaryElementsLoaded();
-            Assert.AreEqual(shoppingCartSummary._orderedItem.Text, item,
+            _searchPage.ProceedToCheckout();
+            _shoppingCartSummary.WaitForSummaryElementsLoaded();
+            Assert.AreEqual(_shoppingCartSummary._orderedItem.Text, item,
                 "Item added to the cart and the one shown on Cart summary page are not the same");
 
-            shoppingCartSummary.ProceedToCheckout();
+            _shoppingCartSummary.ProceedToCheckout();
         }
 
         private void CreateAccount()
