@@ -1,10 +1,5 @@
 ﻿using Bogus;
 using Ideals_Test_Project.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Ideals_Test_Project.Builders
 {
@@ -23,6 +18,5 @@ namespace Ideals_Test_Project.Builders
             .RuleFor(x => x.MobilePhone, f => f.Phone.PhoneNumber("(###) ###-####"))
             .RuleFor(x => x.Password, f => f.Random.String(15))
             .Generate();
-  
     }
 }

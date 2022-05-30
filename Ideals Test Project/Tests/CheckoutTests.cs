@@ -76,7 +76,9 @@ namespace Ideals_Test_Project.Tests
             var item = AddItemToTheCartFromHomePage();
             NavigateToCartThroughUrl();
             CheckItemsInTheCart(item);
+            
             ProceedToCheckout();
+            CreateAccount();
             ConfirmAddress();
             ConfirmShipping();
 
@@ -136,7 +138,7 @@ namespace Ideals_Test_Project.Tests
 
         private void PerformSearch(SearchPage searchPage)
         {
-            var searchText = _homePage.SelectRandomItemName();
+            var searchText = _homePage.SelectRandomItemTextToSearch();
             ReporterHelper.Log(AventStack.ExtentReports.Status.Info, $"Random item is selected: {searchText}");
 
             searchPage.PerformSearch(searchText);
@@ -197,7 +199,7 @@ namespace Ideals_Test_Project.Tests
 
         private string  AddItemToTheCartFromHomePage()
         {
-            return _homePage.AddRandomItemToTheCart();
+            return _homePage.AddItemToTheCart();
         }
 
         private void NavigateToCartThroughUrl()
@@ -207,6 +209,8 @@ namespace Ideals_Test_Project.Tests
 
         private void CheckItemsInTheCart(string item)
         {
+            _shoppingCartSummary.WaitForSummaryElementsLoaded();
+
             Assert.AreEqual(_shoppingCartSummary._orderedItem.Text, item,
                 "Item added to the cart and the one shown on Cart summary page are not the same");
         }

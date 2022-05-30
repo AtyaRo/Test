@@ -1,4 +1,5 @@
-﻿using Ideals_Test_Project.Models;
+﻿using Ideals_Test_Project.Helpers;
+using Ideals_Test_Project.Models;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
@@ -33,11 +34,13 @@ namespace Ideals_Test_Project.Pages
             wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("#email_create")));
 
             _emailAddressOnCreate.SendKeys(emailAddress);
+            ReporterHelper.Log(AventStack.ExtentReports.Status.Info, $"Email address {emailAddress} is entered");
         }
 
         public void OpenCreateAccountForm()
         {
             _createAccountBtn.Click();
+            ReporterHelper.Log(AventStack.ExtentReports.Status.Info, $"Proceeding to Create Account form");
         }
 
         public void FillInRegistrationForm(CustomerInfoModel customerInfo)
@@ -58,8 +61,12 @@ namespace Ideals_Test_Project.Pages
 
             var selectElement = new SelectElement(_state);
             selectElement.SelectByIndex(1);
+            ReporterHelper.Log(AventStack.ExtentReports.Status.Info, 
+                $"CustomerInfo form is prefilled with Customer data");
 
             _registerBtn.Click();
+            ReporterHelper.Log(AventStack.ExtentReports.Status.Info,
+                $"Submitting registration form");
         }
     }
 }

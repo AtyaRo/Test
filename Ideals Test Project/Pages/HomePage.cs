@@ -1,4 +1,5 @@
 ﻿using Ideals_Test_Project.Extensions;
+using Ideals_Test_Project.Helpers;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
@@ -12,7 +13,9 @@ namespace Ideals_Test_Project.Pages
         {
         }
 
-        private IList<IWebElement> _featuredHomePageItems => driver.FindElements(By.CssSelector("ul#homefeatured h5 a.product-name"));
+        private IList<IWebElement> _featuredItems => driver.FindElements(By.CssSelector("#homefeatured a.product_img_link"));
+
+        private IList<IWebElement> _featuredHomePageItemNames => driver.FindElements(By.CssSelector("ul#homefeatured h5 a.product-name"));
         private IWebElement _addToCartBtn => driver.FindElement(By.CssSelector(".button-container a.button.ajax_add_to_cart_button"));
 
         //Header
@@ -34,41 +37,42 @@ namespace Ideals_Test_Project.Pages
         public IWebElement Newsletter => driver.TryGetWebElement(By.CssSelector("#newsletter-input"));
         public IWebElement StoreInfo => driver.TryGetWebElement(By.CssSelector("#block_contact_infos"));
 
-        public string SelectRandomItemName()
+        public string SelectRandomItemTextToSearch()
         {
             OpenHomePage();
 
-            return SelectRandomItem().Text;
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("ul#homefeatured h5 a.product-name")));
+
+            var itemsCount = _featuredHomePageItemNames.Count();
+            var random = new Random();
+            var randomItem = random.Next(itemsCount - 1);
+
+            ReporterHelper.Log(AventStack.ExtentReports.Status.Info, 
+                $"Random item product name is: {_featuredHomePageItemNames[randomItem].Text}");
+            return _featuredHomePageItemNames[randomItem].Text;
         }
 
-        public string AddRandomItemToTheCart()
+        public string AddItemToTheCart()
         {
-            var randomItem = SelectRandomItem();
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("#homefeatured a.product_img_link")));
+            
+            var itemName = _featuredHomePageItemNames[0].Text;
 
             Actions actions = new Actions(driver);
 
-            var itemName = randomItem.Text;
-
-            actions.MoveToElement(randomItem);
+            actions.MoveToElement(_featuredItems[0]);
             actions.MoveToElement(_addToCartBtn);
 
             actions.Click().Build().Perform();
 
+            ReporterHelper.Log(AventStack.ExtentReports.Status.Info,
+                $"Item {itemName} is added to the cart");
+
             return itemName;
-
         }
 
-        private IWebElement SelectRandomItem()
-        {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-            wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("ul#homefeatured h5 a.product-name")));
-
-            var itemsCount = _featuredHomePageItems.Count();
-            var random = new Random();
-            var randomItem = random.Next(itemsCount - 1);
-
-            return _featuredHomePageItems[randomItem];
-        }
     }
 
 }
