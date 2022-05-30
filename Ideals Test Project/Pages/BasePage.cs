@@ -8,19 +8,19 @@ namespace Ideals_Test_Project.Pages
 {
     public class BasePage
     {
-        protected IWebDriver? driver;
+        protected IWebDriver? Driver;
 
         public BasePage(IWebDriver driver)
         {
-            this.driver = driver;
+            this.Driver = driver;
         }
 
         public void OpenHomePage()
         {
-            driver.Navigate().GoToUrl(Constants.HomePage);
+            Driver.Navigate().GoToUrl(Constants.HomePage);
             ReporterHelper.Log(AventStack.ExtentReports.Status.Info, $"Home page is opened: {Constants.HomePage}");
 
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            WebDriverWait wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(10));
             wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("a.login")));
         }
 

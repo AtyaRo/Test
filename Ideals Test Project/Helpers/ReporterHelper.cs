@@ -7,22 +7,22 @@ namespace Ideals_Test_Project.Helpers
 {
     public static class ReporterHelper
     {
-        private static ExtentReports reporter = new ExtentReports();
-        private static ExtentHtmlReporter htmlReporter = new ExtentHtmlReporter(Assembly.GetEntryAssembly().Location);
-        public static ConcurrentDictionary<string, ExtentTest> TestLogs = new ConcurrentDictionary<string, ExtentTest>();
-        private static object elock = new object();   
+        private static ExtentReports _reporter = new ExtentReports();
+        private static ExtentHtmlReporter _htmlReporter = new ExtentHtmlReporter(Assembly.GetEntryAssembly().Location);
+        private static ConcurrentDictionary<string, ExtentTest> _testLogs = new ConcurrentDictionary<string, ExtentTest>();
+        private static object _lock = new object();   
         static ReporterHelper()
         {
-            reporter.AttachReporter(htmlReporter);
+            _reporter.AttachReporter(_htmlReporter);
         }
 
         private static ExtentTest GetTestLog()
         {
             var testName = TestContext.CurrentContext.Test.FullName;
-            if (!TestLogs.TryGetValue(testName, out var testLog))
+            if (!_testLogs.TryGetValue(testName, out var testLog))
             {
-                testLog = reporter.CreateTest(testName);
-                TestLogs.TryAdd(testName, testLog);
+                testLog = _reporter.CreateTest(testName);
+                _testLogs.TryAdd(testName, testLog);
             }
 
             return testLog;
@@ -30,7 +30,7 @@ namespace Ideals_Test_Project.Helpers
 
         public static void Log(Status status, string logText)
         {
-            lock (elock)
+            lock (_lock)
             {
                 GetTestLog().Log(status, logText);
             }
@@ -38,12 +38,12 @@ namespace Ideals_Test_Project.Helpers
 
         public static void CloseReporter()
         {
-            reporter.Flush();
+            _reporter.Flush();
         }
 
         public static void SaveScreenshot(string imageFilePath)
         {
-            lock (elock)
+            lock (_lock)
             {
                 GetTestLog().Error("Error", MediaEntityBuilder.CreateScreenCaptureFromPath(imageFilePath).Build());
             }

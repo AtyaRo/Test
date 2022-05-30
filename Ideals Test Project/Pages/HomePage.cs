@@ -13,34 +13,34 @@ namespace Ideals_Test_Project.Pages
         {
         }
 
-        private IList<IWebElement> _featuredItems => driver.FindElements(By.CssSelector("#homefeatured a.product_img_link"));
-        private IList<IWebElement> _featuredHomePageItemNames => driver.FindElements(By.CssSelector("ul#homefeatured h5 a.product-name"));
-        private IWebElement _addToCartBtn => driver.FindElement(By.CssSelector(".button-container a.button.ajax_add_to_cart_button"));
+        private IList<IWebElement> _featuredItems => Driver.FindElements(By.CssSelector("#homefeatured a.product_img_link"));
+        private IList<IWebElement> _featuredHomePageItemNames => Driver.FindElements(By.CssSelector("ul#homefeatured h5 a.product-name"));
+        private IWebElement _addToCartBtn => Driver.FindElement(By.CssSelector(".button-container a.button.ajax_add_to_cart_button"));
 
         //Header
-        public IWebElement HeaderBanner => driver.TryGetWebElement(By.CssSelector("#header div.banner a img"));
-        public IWebElement ContactUs => driver.TryGetWebElement(By.CssSelector("div#contact-link a"));
-        public IWebElement SignIn => driver.TryGetWebElement(By.CssSelector("a.login"));
-        public IWebElement CategoriesBlock => driver.TryGetWebElement(By.CssSelector("ul.sf-menu.menu-content.sf-js-enabled"));
-        public IWebElement SearchField => driver.TryGetWebElement(By.ClassName("search_query"));
-        public IWebElement AddToCartBtn => driver.TryGetWebElement(By.CssSelector(".button-container a.button.ajax_add_to_cart_button"));
+        public IWebElement HeaderBanner => Driver.TryGetWebElement(By.CssSelector("#header div.banner a img"));
+        public IWebElement ContactUs => Driver.TryGetWebElement(By.CssSelector("div#contact-link a"));
+        public IWebElement SignIn => Driver.TryGetWebElement(By.CssSelector("a.login"));
+        public IWebElement CategoriesBlock => Driver.TryGetWebElement(By.CssSelector("ul.sf-menu.menu-content.sf-js-enabled"));
+        public IWebElement SearchField => Driver.TryGetWebElement(By.ClassName("search_query"));
+        public IWebElement AddToCartBtn => Driver.TryGetWebElement(By.CssSelector(".button-container a.button.ajax_add_to_cart_button"));
 
         //Main block
-        public IWebElement SaleBlock => driver.TryGetWebElement(By.CssSelector("#homeslider a img"));
-        public IWebElement Popular => driver.TryGetWebElement(By.CssSelector("a.homefeatured"));
-        public IWebElement BestSellers => driver.TryGetWebElement(By.CssSelector("a.blockbestsellers"));
-        public IList<IWebElement> FeaturedHomePageItems => driver.FindElements(By.CssSelector("ul#homefeatured h5 a.product-name"));
+        public IWebElement SaleBlock => Driver.TryGetWebElement(By.CssSelector("#homeslider a img"));
+        public IWebElement Popular => Driver.TryGetWebElement(By.CssSelector("a.homefeatured"));
+        public IWebElement BestSellers => Driver.TryGetWebElement(By.CssSelector("a.blockbestsellers"));
+        public IList<IWebElement> FeaturedHomePageItems => Driver.FindElements(By.CssSelector("ul#homefeatured h5 a.product-name"));
 
         //Footer
-        public IWebElement SocialBlock => driver.TryGetWebElement(By.CssSelector("#social_block"));
-        public IWebElement Newsletter => driver.TryGetWebElement(By.CssSelector("#newsletter-input"));
-        public IWebElement StoreInfo => driver.TryGetWebElement(By.CssSelector("#block_contact_infos"));
+        public IWebElement SocialBlock => Driver.TryGetWebElement(By.CssSelector("#social_block"));
+        public IWebElement Newsletter => Driver.TryGetWebElement(By.CssSelector("#newsletter-input"));
+        public IWebElement StoreInfo => Driver.TryGetWebElement(By.CssSelector("#block_contact_infos"));
 
         public string SelectRandomItemTextToSearch()
         {
             OpenHomePage();
 
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            WebDriverWait wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(10));
             wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("ul#homefeatured h5 a.product-name")));
 
             var itemsCount = _featuredHomePageItemNames.Count();
@@ -54,12 +54,12 @@ namespace Ideals_Test_Project.Pages
 
         public string AddItemToTheCart()
         {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            WebDriverWait wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(10));
             wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("#homefeatured a.product_img_link")));
             
             var itemName = _featuredHomePageItemNames[0].Text;
 
-            Actions actions = new Actions(driver);
+            Actions actions = new Actions(Driver);
 
             actions.MoveToElement(_featuredItems[0]);
             actions.MoveToElement(_addToCartBtn);

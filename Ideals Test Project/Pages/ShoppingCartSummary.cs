@@ -13,21 +13,21 @@ namespace Ideals_Test_Project.Pages
 
         }
         
-        private IWebElement _proceedToCheckout => driver.FindElement(By.CssSelector("p.cart_navigation a[title='Proceed to checkout']"));
-        private IWebElement _confirmAddress => driver.FindElement(By.CssSelector("button[name='processAddress']"));
-        private IWebElement _processCarrierBtn => driver.FindElement(By.CssSelector("button[name='processCarrier']"));
-        private IWebElement _agreeTermsCheckbox => driver.FindElement(By.CssSelector("#cgv"));
-        public IWebElement _orderedItem => driver.FindElement(By.CssSelector(".cart_description p.product-name a"));
-        public IWebElement _itemNameOnPaymentScreen => driver.FindElement(By.CssSelector("p.product-name a"));
-        public IWebElement _payByChequeBtn => driver.FindElement(By.CssSelector("a.cheque"));
-        public IWebElement _orderConfirmationBtn => driver.FindElement(By.CssSelector("p.cart_navigation button[type='submit']"));
-        public IWebElement _orderConfirmationAlert => driver.FindElement(By.CssSelector("p.alert-success"));
-        public IWebElement _cartPageBreadcrumb => driver.FindElement(By.CssSelector("span.navigation_page"));
+        private IWebElement _proceedToCheckout => Driver.FindElement(By.CssSelector("p.cart_navigation a[title='Proceed to checkout']"));
+        private IWebElement _confirmAddress => Driver.FindElement(By.CssSelector("button[name='processAddress']"));
+        private IWebElement _processCarrierBtn => Driver.FindElement(By.CssSelector("button[name='processCarrier']"));
+        private IWebElement _agreeTermsCheckbox => Driver.FindElement(By.CssSelector("#cgv"));
+        public IWebElement _orderedItem => Driver.FindElement(By.CssSelector(".cart_description p.product-name a"));
+        public IWebElement _itemNameOnPaymentScreen => Driver.FindElement(By.CssSelector("p.product-name a"));
+        public IWebElement _payByChequeBtn => Driver.FindElement(By.CssSelector("a.cheque"));
+        public IWebElement _orderConfirmationBtn => Driver.FindElement(By.CssSelector("p.cart_navigation button[type='submit']"));
+        public IWebElement _orderConfirmationAlert => Driver.FindElement(By.CssSelector("p.alert-success"));
+        public IWebElement _cartPageBreadcrumb => Driver.FindElement(By.CssSelector("span.navigation_page"));
 
 
         public void WaitForSummaryElementsLoaded()
         {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            WebDriverWait wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(10));
             wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(".cart_description p.product-name a")));
 
             ReporterHelper.Log(AventStack.ExtentReports.Status.Info,
@@ -36,7 +36,7 @@ namespace Ideals_Test_Project.Pages
 
         public void ProceedToCheckout()
         {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            WebDriverWait wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(10));
             wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("p.cart_navigation a[title='Proceed to checkout']")));
 
             _proceedToCheckout.Click();
@@ -45,7 +45,7 @@ namespace Ideals_Test_Project.Pages
 
         public void ConfirmShippingAddress()
         {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            WebDriverWait wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(10));
             wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("button[name='processAddress']")));
 
             _confirmAddress.Click();
@@ -54,10 +54,10 @@ namespace Ideals_Test_Project.Pages
 
         public void ConfirmProcessCarrier()
         {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            WebDriverWait wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(10));
             wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("button[name='processCarrier']")));
 
-            Actions action = new Actions(driver);
+            Actions action = new Actions(Driver);
             action.MoveToElement(_agreeTermsCheckbox).Click().Perform();
             ReporterHelper.Log(AventStack.ExtentReports.Status.Info, $"Agreed on Terms and conditions");
 
@@ -67,7 +67,7 @@ namespace Ideals_Test_Project.Pages
 
         public void WaitForItemsLoadedOnPaymentScreen()
         {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            WebDriverWait wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(10));
             wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("p.product-name a")));
 
             ReporterHelper.Log(AventStack.ExtentReports.Status.Info, $"Produt item is loaded on Payments screen");
@@ -81,7 +81,7 @@ namespace Ideals_Test_Project.Pages
 
         public void ConfirmOrder()
         {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            WebDriverWait wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(10));
             wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("p.cart_navigation button[type='submit']")));
 
             _orderConfirmationBtn.Click();
@@ -90,7 +90,7 @@ namespace Ideals_Test_Project.Pages
 
         public void WaitForOrderConfirmationMessage()
         {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            WebDriverWait wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(10));
             wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("p.alert-success")));
 
             ReporterHelper.Log(AventStack.ExtentReports.Status.Info, $"Confirmation message is displayed");
@@ -98,9 +98,9 @@ namespace Ideals_Test_Project.Pages
 
         public void NavigateToCartByUrl()
         {
-            driver.Navigate().GoToUrl(Constants.CartPage);
+            Driver.Navigate().GoToUrl(Constants.CartPage);
 
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            WebDriverWait wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(10));
             wait.Until(ExpectedConditions.TextToBePresentInElement(_cartPageBreadcrumb,
                 "Your shopping cart"));
 

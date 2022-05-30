@@ -1,17 +1,12 @@
 ﻿using Ideals_Test_Project.Builders;
 using Ideals_Test_Project.Helpers;
 using Ideals_Test_Project.Pages;
+using Ideals_Test_Project.TestSources;
 using OpenQA.Selenium;
 using System.Reflection;
 
 namespace Ideals_Test_Project.Tests
 {
-    public class DriverSource
-    {
-        public static IEnumerable<string> Drivers => new string[] { Constants.ChromeBrowserName, Constants.FirefoxBrowserName };
-        
-    }
-
     [TestFixture]
     [TestFixtureSource(typeof(DriverSource), nameof(DriverSource.Drivers))]
     public class CheckoutTests : BaseTest
@@ -28,10 +23,10 @@ namespace Ideals_Test_Project.Tests
         [SetUp]
         public void Setup()
         {
-            _searchPage = new SearchPage(driver);
-            _homePage = new HomePage(driver);
-            _shoppingCartSummary = new ShoppingCartSummary(driver);
-            _registerPage = new RegisterPage(driver);
+            _searchPage = new SearchPage(Driver);
+            _homePage = new HomePage(Driver);
+            _shoppingCartSummary = new ShoppingCartSummary(Driver);
+            _registerPage = new RegisterPage(Driver);
         }
 
         [TearDown]
@@ -39,10 +34,9 @@ namespace Ideals_Test_Project.Tests
         {
             if (TestContext.CurrentContext.Result.Outcome.Status == NUnit.Framework.Interfaces.TestStatus.Failed)
             {
-                ReporterHelper.Log(AventStack.ExtentReports.Status.Error,
-                    TestContext.CurrentContext.Result.Message);
+                ReporterHelper.Log(AventStack.ExtentReports.Status.Error, TestContext.CurrentContext.Result.Message);
 
-                Screenshot screenshot = ((ITakesScreenshot)driver).GetScreenshot();
+                Screenshot screenshot = ((ITakesScreenshot)Driver).GetScreenshot();
                 string title = TestContext.CurrentContext.Test.Name;
                 string runname = $"{title} {DateTime.Now.ToString("yyyy - MM - dd - HH_mm_ss")}";
                 string screenshotfilename = $"{Assembly.GetEntryAssembly().Location}{runname}.jpg";
@@ -51,13 +45,13 @@ namespace Ideals_Test_Project.Tests
                 ReporterHelper.SaveScreenshot(screenshotfilename);               
             }
 
-            driver.Quit();            
+            Driver.Quit();            
         }
 
         [Test]
         public void CheckBuyingItemsThroughSearchByNotRegisteredCustomer()
         {
-            PerformSearch(_searchPage);
+            PerformSearch();
             var item = AddItemToTheCartFromSearch();
             ProceedToCheckout(item);
             CreateAccount();
@@ -138,12 +132,12 @@ namespace Ideals_Test_Project.Tests
             });
         }
 
-        private void PerformSearch(SearchPage searchPage)
+        private void PerformSearch()
         {
             var searchText = _homePage.SelectRandomItemTextToSearch();
             ReporterHelper.Log(AventStack.ExtentReports.Status.Info, $"Random item is selected: {searchText}");
 
-            searchPage.PerformSearch(searchText);
+            _searchPage.PerformSearch(searchText);
         }
 
         private string AddItemToTheCartFromSearch()

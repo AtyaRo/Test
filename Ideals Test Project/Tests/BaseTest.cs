@@ -8,24 +8,24 @@ namespace Ideals_Test_Project.Tests
     [TestFixture]
     public class BaseTest
     {
-        protected IWebDriver? driver;
+        protected IWebDriver? Driver;
 
         public BaseTest(string driverName)
         {
             switch (driverName)
             {
                 case "Chrome":
-                    driver = new ChromeDriver();
+                    Driver = new ChromeDriver();
                     break;
                 case "Firefox":
-                    driver = new FirefoxDriver();
+                    Driver = new FirefoxDriver();
                     break;
                 default:
-                    driver = new ChromeDriver();
+                    Driver = new ChromeDriver();
                     break;
             }
 
-            driver.Manage().Window.Maximize();
+            Driver.Manage().Window.Maximize();
         }
 
         [OneTimeTearDown]
