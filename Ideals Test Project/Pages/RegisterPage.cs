@@ -12,25 +12,25 @@ namespace Ideals_Test_Project.Pages
         {
 
         }
-        private IWebElement _emailAddressOnCreate => driver.FindElement(By.CssSelector("#email_create"));
-        private IWebElement _createAccountBtn => driver.FindElement(By.CssSelector("#SubmitCreate"));       
-        private IWebElement _firstName => driver.FindElement(By.CssSelector("#customer_firstname"));
-        private IWebElement _lastName => driver.FindElement(By.CssSelector("#customer_lastname"));
-        private IWebElement _email => driver.FindElement(By.CssSelector("#email"));
-        private IWebElement _password => driver.FindElement(By.CssSelector("#passwd"));
-        private IWebElement _address => driver.FindElement(By.CssSelector("#address1"));
-        private IWebElement _addressFirstName => driver.FindElement(By.CssSelector("input.form-control#firstname"));
-        private IWebElement _addressLastName => driver.FindElement(By.CssSelector("input.form-control#lastname"));
-        private IWebElement _city => driver.FindElement(By.CssSelector("#city"));
-        private IWebElement _postcode => driver.FindElement(By.CssSelector("#postcode"));
-        private IWebElement _state => driver.FindElement(By.CssSelector("#id_state"));       
-        private IWebElement _mobilePhone => driver.FindElement(By.CssSelector("#phone_mobile"));
-        private IWebElement _addressAlias => driver.FindElement(By.CssSelector("#alias"));
-        private IWebElement _registerBtn => driver.FindElement(By.CssSelector("button#submitAccount"));
+        private IWebElement _emailAddressOnCreate => Driver.FindElement(By.CssSelector("#email_create"));
+        private IWebElement _createAccountBtn => Driver.FindElement(By.CssSelector("#SubmitCreate"));       
+        private IWebElement _firstName => Driver.FindElement(By.CssSelector("#customer_firstname"));
+        private IWebElement _lastName => Driver.FindElement(By.CssSelector("#customer_lastname"));
+        private IWebElement _email => Driver.FindElement(By.CssSelector("#email"));
+        private IWebElement _password => Driver.FindElement(By.CssSelector("#passwd"));
+        private IWebElement _address => Driver.FindElement(By.CssSelector("#address1"));
+        private IWebElement _addressFirstName => Driver.FindElement(By.CssSelector("input.form-control#firstname"));
+        private IWebElement _addressLastName => Driver.FindElement(By.CssSelector("input.form-control#lastname"));
+        private IWebElement _city => Driver.FindElement(By.CssSelector("#city"));
+        private IWebElement _postcode => Driver.FindElement(By.CssSelector("#postcode"));
+        private IWebElement _state => Driver.FindElement(By.CssSelector("#id_state"));       
+        private IWebElement _mobilePhone => Driver.FindElement(By.CssSelector("#phone_mobile"));
+        private IWebElement _addressAlias => Driver.FindElement(By.CssSelector("#alias"));
+        private IWebElement _registerBtn => Driver.FindElement(By.CssSelector("button#submitAccount"));
 
         public void EnterEmail(string emailAddress)
         {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            WebDriverWait wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(10));
             wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("#email_create")));
 
             _emailAddressOnCreate.SendKeys(emailAddress);
@@ -45,7 +45,7 @@ namespace Ideals_Test_Project.Pages
 
         public void FillInRegistrationForm(CustomerInfoModel customerInfo)
         {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            WebDriverWait wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(10));
             wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("#customer_firstname")));
 
             _firstName.SendKeys(customerInfo.FirstName);

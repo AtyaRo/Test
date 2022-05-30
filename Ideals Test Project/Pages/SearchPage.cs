@@ -12,13 +12,13 @@ namespace Ideals_Test_Project.Pages
         {
 
         }
-        private IWebElement _searchField => driver.FindElement(By.ClassName("search_query"));
-        private IWebElement _searchBtn => driver.FindElement(By.CssSelector("#searchbox > button"));
-        private IList<IWebElement> _searchMatchedItemsList => driver.FindElements(By.CssSelector(".product_list.grid.row div.product-image-container"));
-        private IWebElement _searcResultItemName => driver.FindElement(By.CssSelector(".right-block .product-name"));
+        private IWebElement _searchField => Driver.FindElement(By.ClassName("search_query"));
+        private IWebElement _searchBtn => Driver.FindElement(By.CssSelector("#searchbox > button"));
+        private IList<IWebElement> _searchMatchedItemsList => Driver.FindElements(By.CssSelector(".product_list.grid.row div.product-image-container"));
+        private IWebElement _searcResultItemName => Driver.FindElement(By.CssSelector(".right-block .product-name"));
 
-        private IWebElement _addToCartBtn => driver.FindElement(By.CssSelector(".button-container a.button.ajax_add_to_cart_button"));
-        private IWebElement _checkoutFirstBtn => driver.FindElement(By.CssSelector("a[title='Proceed to checkout']"));
+        private IWebElement _addToCartBtn => Driver.FindElement(By.CssSelector(".button-container a.button.ajax_add_to_cart_button"));
+        private IWebElement _checkoutFirstBtn => Driver.FindElement(By.CssSelector("a[title='Proceed to checkout']"));
 
         public void PerformSearch(string searchText)
         {
@@ -30,10 +30,10 @@ namespace Ideals_Test_Project.Pages
 
         public string AddFirstFoundItemToCart()
         {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            WebDriverWait wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(10));
             wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(".product_list.grid.row div.product-image-container")));
 
-            Actions actions = new Actions(driver);
+            Actions actions = new Actions(Driver);
 
             var itemName = _searcResultItemName.Text;
 
@@ -49,7 +49,7 @@ namespace Ideals_Test_Project.Pages
 
         public void ProceedToCheckout()
         {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            WebDriverWait wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(10));
             wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("a[title='Proceed to checkout']")));
 
             _checkoutFirstBtn.Click();
