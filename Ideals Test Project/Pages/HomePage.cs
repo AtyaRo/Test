@@ -14,7 +14,6 @@ namespace Ideals_Test_Project.Pages
         }
 
         private IList<IWebElement> _featuredItems => driver.FindElements(By.CssSelector("#homefeatured a.product_img_link"));
-
         private IList<IWebElement> _featuredHomePageItemNames => driver.FindElements(By.CssSelector("ul#homefeatured h5 a.product-name"));
         private IWebElement _addToCartBtn => driver.FindElement(By.CssSelector(".button-container a.button.ajax_add_to_cart_button"));
 
@@ -56,7 +55,7 @@ namespace Ideals_Test_Project.Pages
         public string AddItemToTheCart()
         {
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-            wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("#homefeatured a.product_img_link")));
+            wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("#homefeatured a.product_img_link")));
             
             var itemName = _featuredHomePageItemNames[0].Text;
 
@@ -64,11 +63,10 @@ namespace Ideals_Test_Project.Pages
 
             actions.MoveToElement(_featuredItems[0]);
             actions.MoveToElement(_addToCartBtn);
-            //wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".button-container a.button.ajax_add_to_cart_button")));
-
 
             actions.Click().Build().Perform();
 
+            wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("div#layer_cart")));           
             ReporterHelper.Log(AventStack.ExtentReports.Status.Info,
                 $"Item {itemName} is added to the cart");
 

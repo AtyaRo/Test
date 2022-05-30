@@ -47,6 +47,8 @@ namespace Ideals_Test_Project.Tests
 
 
                 ReporterHelper.SaveScreenshot(screenshotfilename);
+                ReporterHelper.Log(AventStack.ExtentReports.Status.Error,
+                    TestContext.CurrentContext.Result.Message);
             }
 
             driver.Quit();            
